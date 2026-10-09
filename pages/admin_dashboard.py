@@ -47,6 +47,10 @@ def render_admin_dashboard() -> None:
     st.markdown('<div class="reception-wrapper">', unsafe_allow_html=True)
 
     render_header()
+    
+    # ── Debug情報 ───────────────────────────────────────
+    with st.expander("🔍 Debug情報", expanded=False):
+        st.write(f"現在時刻: {datetime.now()}")
 
     # ── ヘッダー行 ───────────────────────────────────────────
     col_title, col_logout = st.columns([4, 1])
@@ -69,6 +73,15 @@ def render_admin_dashboard() -> None:
     visitors = get_all_visitors(limit=500)
     today_str = datetime.now().strftime("%Y-%m-%d")
     today_visitors = [v for v in visitors if v["visited_at"].startswith(today_str)]
+    
+    # Debug 情報を expander に追加
+    with st.expander("🔍 Debug情報", expanded=False):
+        st.write(f"本日の日付: {today_str}")
+        st.write(f"取得した訪問者数（全体）: {len(visitors)}件")
+        st.write(f"本日の訪問者数: {len(today_visitors)}件")
+        if visitors:
+            st.write(f"最新訪問: {visitors[0].get('visited_at')}")
+            st.write(f"最古訪問: {visitors[-1].get('visited_at')}")
 
     # ── サマリーカード ───────────────────────────────────────
     st.markdown(f"""
