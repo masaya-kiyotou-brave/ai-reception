@@ -70,6 +70,61 @@ def render_admin_dashboard() -> None:
     visitors = get_all_visitors(limit=500)
     today_str = datetime.now().strftime("%Y-%m-%d")
     today_visitors = [v for v in visitors if v["visited_at"].startswith(today_str)]
+    
+    st.markdown(f"""
+    <div class="admin-summary-row">
+      <div class="admin-summary-card">
+        <div class="admin-summary-num">{len(today_visitors)}</div>
+        <div class="admin-summary-label">本日の来訪者数</div>
+      </div>
+      <div class="admin-summary-card">
+        <div class="admin-summary-num">{len(visitors)}</div>
+        <div class="admin-summary-label">累計来訪者数</div>
+      </div>
+      <div class="admin-summary-card">
+        <div class="admin-summary-num">
+          <span style="color:#4caf50; font-size:14px;">●</span> 正常
+        </div>
+        <div class="admin-summary-label">カメラ状態</div>
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("<div style='height:12px'></div>", unsafe_allow_html=True)
+
+    # ── CSVエクスポートボタン ────────────────────────────────
+    if visitors:
+        csv_data = _export_csv(visitors)
+        filename = f"来訪者一覧_{datetime.now().strftime('%Y%m%d')}.csv"
+        st.download_button(
+            label="📥 CSVエクスポート（全来訪者）",
+            data=csv_data,
+            file_name=filename,
+            mime="text/csv",
+            key="csv_export_btn",
+        )
+
+    st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+
+    # ── タブ ─────────────────────────────────────────────────
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["📅 本日", "📋 全来訪者", "📊 月別集計", "⭐ 常連客", "👥 担当者管理"])
+
+    with tab1:
+        _render_visitor_table(today_visitors, empty_msg="本日の来訪者はまだいません", tab="today")
+
+    with tab2:
+        _render_visitor_table(visitors, empty_msg="来訪者データがありません", tab="all")
+
+    with tab3:
+        _render_monthly_summary()
+
+    with tab4:
+        _render_repeat_visitors()
+    with tab5:
+        _render_staff_management()
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
 
 def _render_repeat_visitors() -> None:
     """常連客一覧を表示する"""
