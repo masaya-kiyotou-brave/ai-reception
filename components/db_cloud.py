@@ -11,8 +11,8 @@ from datetime import datetime
 def _get_client():
     """Supabaseクライアントを返す"""
     from supabase import create_client
-    url = os.environ.get("SUPABASE_URL", "")
-    key = os.environ.get("SUPABASE_KEY", "")
+    url = st.secrets.get("SUPABASE_URL", "")
+    key = st.secrets.get("SUPABASE_KEY", "")
     return create_client(url, key)
 
 
