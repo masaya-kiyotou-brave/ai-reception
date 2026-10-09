@@ -47,10 +47,7 @@ def render_admin_dashboard() -> None:
     st.markdown('<div class="reception-wrapper">', unsafe_allow_html=True)
 
     render_header()
-    
-    # ── Debug情報 ───────────────────────────────────────
-    with st.expander("🔍 Debug情報", expanded=False):
-        st.write(f"現在時刻: {datetime.now()}")
+
 
     # ── ヘッダー行 ───────────────────────────────────────────
     col_title, col_logout = st.columns([4, 1])
