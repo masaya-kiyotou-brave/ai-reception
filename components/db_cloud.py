@@ -13,6 +13,7 @@ def _get_client():
     from supabase import create_client
     url = st.secrets.get("SUPABASE_URL", "")
     key = st.secrets.get("SUPABASE_KEY", "")
+    print(f"[DEBUG] Supabase URL length: {len(url)}, Key length: {len(key)}")
     return create_client(url, key)
 
 
@@ -83,12 +84,22 @@ def save_face_encoding(visitor_id: int, encoding, person_id: str = None) -> bool
 def get_all_visitors(limit: int = 100) -> list[dict]:
     """来訪者一覧を取得する（管理者画面用）"""
     try:
+        print(f"[DEBUG] get_all_visitors() called with limit={limit}")
         client = _get_client()
         result = client.table("visitors").select("*").order(
             "visited_at", desc=True
         ).limit(limit).execute()
-        return result.data or []
+        data = result.data or []
+        print(f"[DEBUG] Retrieved {len(data)} visitors from database")
+        if data:
+            print(f"[DEBUG] First visitor: {data[0]}")
+            print(f"[DEBUG] Latest visited_at: {data[0].get('visited_at')}")
+            print(f"[DEBUG] Oldest visited_at: {data[-1].get('visited_at')}")
+        return data
     except Exception as e:
+        print(f"[DEBUG] get_all_visitors() Exception: {type(e).__name__}: {str(e)}")
+        import traceback
+        traceback.print_exc()
         print(f"[DB] get_all_visitors エラー: {e}")
         return []
 
