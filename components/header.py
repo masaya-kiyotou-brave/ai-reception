@@ -8,19 +8,15 @@ from datetime import datetime
 
 
 def _get_clock_html() -> str:
-    """現在時刻・日付のHTMLを返す（JSで自動更新）"""
-    now = datetime.now()
-    days = ["月", "火", "水", "木", "金", "土", "日"]
-    time_str = now.strftime("%H:%M")
-    date_str = f"{now.month}月{now.day}日（{days[now.weekday()]}）"
+    """現在時刻・日付のHTMLを返す（ブラウザのローカルタイムゾーンで表示）"""
     return f"""
     <div class="clock-area">
-      <div class="clock-time" id="js-clock">{time_str}</div>
-      <div class="clock-date" id="js-date">{date_str}</div>
+      <div class="clock-time" id="js-clock">--:--</div>
+      <div class="clock-date" id="js-date">--月--日（-）</div>
     </div>
     <script>
-      // Streamlitのリロードに頼らずJSで時計を更新
-      (function tick() {{
+      // ブラウザのローカルタイムゾーンに基づいて時計を更新
+      (function updateClock() {{
         const now = new Date();
         const hh  = String(now.getHours()).padStart(2,'0');
         const mm  = String(now.getMinutes()).padStart(2,'0');
@@ -30,7 +26,7 @@ def _get_clock_html() -> str:
         const dl = document.getElementById('js-date');
         if (el) el.textContent = hh+':'+mm;
         if (dl) dl.textContent = dateStr;
-        setTimeout(tick, 10000);  // 10秒ごとに更新
+        setTimeout(updateClock, 10000);  // 10秒ごとに更新
       }})();
     </script>
     """
