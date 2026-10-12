@@ -11,40 +11,61 @@ def render_header() -> None:
     st.components.v1.html("""
     <style>
       .header-bar {
+        width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 12px 20px;
-        background-color: #f8f9fa;
-        border-bottom: 1px solid #e0e0e0;
+        padding: 18px 0 14px;
+        border-bottom: 1px solid rgba(74, 127, 165, 0.12);
+        margin-bottom: 8px;
       }
       .logo-area {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
       }
       .logo-icon {
-        font-size: 32px;
+        width: 38px;
+        height: 38px;
+        background: linear-gradient(135deg, #4a7fa5, #6badd4);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        box-shadow: 0 3px 12px rgba(74, 127, 165, 0.28);
       }
       .logo-name {
-        font-weight: 600;
-        font-size: 18px;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 20px;
+        font-weight: 400;
+        color: #1a2533;
+        letter-spacing: 0.04em;
       }
       .logo-sub {
-        font-size: 12px;
-        color: #666;
+        font-size: 9px;
+        font-weight: 300;
+        color: #8fa3b8;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        margin-top: 1px;
       }
       .clock-area {
         text-align: right;
       }
       .clock-time {
-        font-size: 24px;
-        font-weight: 600;
-        font-family: 'Courier New', monospace;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 26px;
+        font-weight: 300;
+        color: #1a2533;
+        letter-spacing: 0.06em;
       }
       .clock-date {
-        font-size: 12px;
-        color: #666;
+        font-size: 11px;
+        font-weight: 300;
+        color: #8fa3b8;
+        letter-spacing: 0.08em;
+        margin-top: 2px;
       }
     </style>
     <div class="header-bar">
