@@ -9,6 +9,44 @@ import streamlit as st
 def render_header() -> None:
     """ヘッダーバーを描画する"""
     st.components.v1.html("""
+    <style>
+      .header-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 20px;
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #e0e0e0;
+      }
+      .logo-area {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .logo-icon {
+        font-size: 32px;
+      }
+      .logo-name {
+        font-weight: 600;
+        font-size: 18px;
+      }
+      .logo-sub {
+        font-size: 12px;
+        color: #666;
+      }
+      .clock-area {
+        text-align: right;
+      }
+      .clock-time {
+        font-size: 24px;
+        font-weight: 600;
+        font-family: 'Courier New', monospace;
+      }
+      .clock-date {
+        font-size: 12px;
+        color: #666;
+      }
+    </style>
     <div class="header-bar">
       <div class="logo-area">
         <div class="logo-icon">🏢</div>
