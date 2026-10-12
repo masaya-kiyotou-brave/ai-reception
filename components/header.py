@@ -6,9 +6,19 @@ components/header.py
 import streamlit as st
 
 
+def _get_clock_html() -> str:
+    """現在時刻・日付のHTMLを返す（ブラウザのローカルタイムゾーンで表示）"""
+    return """
+    <div class="clock-area">
+      <div class="clock-time" id="js-clock">--:--</div>
+      <div class="clock-date" id="js-date">--月--日（-）</div>
+    </div>
+    """
+
+
 def render_header() -> None:
     """ヘッダーバーを描画する"""
-    st.markdown("""
+    st.markdown(f"""
     <div class="header-bar">
       <div class="logo-area">
         <div class="logo-icon">🏢</div>
@@ -17,13 +27,13 @@ def render_header() -> None:
           <div class="logo-sub">Smart Front Desk</div>
         </div>
       </div>
-      <div class="clock-area">
-        <div class="clock-time" id="js-clock">--:--</div>
-        <div class="clock-date" id="js-date">--月--日（-）</div>
-      </div>
+      {_get_clock_html()}
     </div>
+    """, unsafe_allow_html=True)
+    
+    # JavaScript を別コンポーネントで実行（height を 0 から変更）
+    st.components.v1.html("""
     <script>
-      // ブラウザのローカルタイムゾーンに基づいて時計を更新
       function updateClock() {
         const now = new Date();
         const hh = String(now.getHours()).padStart(2,'0');
@@ -38,4 +48,4 @@ def render_header() -> None:
       updateClock();
       setInterval(updateClock, 10000);
     </script>
-    """, unsafe_allow_html=True)
+    """, height=1)
