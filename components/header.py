@@ -6,13 +6,26 @@ components/header.py
 import streamlit as st
 
 
-def _get_clock_html() -> str:
-    """現在時刻・日付のHTMLを返す（ブラウザのローカルタイムゾーンで表示）"""
-    return """
-    <div class="clock-area">
-      <div class="clock-time" id="js-clock">--:--</div>
-      <div class="clock-date" id="js-date">--月--日（-）</div>
+def render_header() -> None:
+    """ヘッダーバーを描画する"""
+    st.markdown("""
+    <div class="header-bar">
+      <div class="logo-area">
+        <div class="logo-icon">🏢</div>
+        <div>
+          <div class="logo-name">Reception AI</div>
+          <div class="logo-sub">Smart Front Desk</div>
+        </div>
+      </div>
+      <div class="clock-area">
+        <div class="clock-time" id="js-clock">--:--</div>
+        <div class="clock-date" id="js-date">--月--日（-）</div>
+      </div>
     </div>
+    """, unsafe_allow_html=True)
+    
+    # JavaScriptのみをst.components.v1.htmlで実行
+    st.components.v1.html("""
     <script>
       // ブラウザのローカルタイムゾーンに基づいて時計を更新
       (function updateClock() {
@@ -28,21 +41,4 @@ def _get_clock_html() -> str:
         setTimeout(updateClock, 10000);  // 10秒ごとに更新
       })();
     </script>
-    """
-
-
-def render_header() -> None:
-    """ヘッダーバーを描画する"""
-    html_content = """
-    <div class="header-bar">
-      <div class="logo-area">
-        <div class="logo-icon">🏢</div>
-        <div>
-          <div class="logo-name">Reception AI</div>
-          <div class="logo-sub">Smart Front Desk</div>
-        </div>
-      </div>
-      """ + _get_clock_html() + """
-    </div>
-    """
-    st.components.v1.html(html_content, height=120)
+    """, height=0)
